@@ -1,13 +1,7 @@
-// Maximum time step in seconds.
+
 var maxStep = 0.05;
 
-/*
-@ - Player start location
-o - Coin
-= - Lava moves horizontally
-| - Lava moves vertically
-v - Lava that only moves down
-*/
+
 var actorChars = {
   "@": Player,
   "o": Coin,
@@ -25,7 +19,7 @@ var levelPlans = [[
 	"                                                                                ",
 	"                                                                  xxx           ",
 	"                                                   xx      xx    xx!xx          ",
-	"                                    o o      xx                  x!!!x          ",
+	"                                    ooo      xx                  x!!!x          ",
 	"                                                                 xx!xx          ",
 	"                                   xxxxx                          xvx           ",
 	"                                                                            xx  ",
@@ -46,8 +40,8 @@ var levelPlans = [[
 	"                                      x!!x                     xxxx     xxxx                                 x!x  ",
 	"                                      x!!xxxxxxxxxx           xx           xx                                x!x  ",
 	"                                      xx!!!!!!!!!!xx         xx             xx                               x!x  ",
-	"                                       xxxxxxxxxx!!x         x                                    o   o   o  x!x  ",
-	"                                                xx!x         x     o   o                                    xx!x  ",
+	"                                       xxxxxxxxxx!!x         x                                               x!x  ",
+	"                                                xx!x         x                                            xx!x  ",
 	"                                                 x!x         x                                xxxxxxxxxxxxxxx!!x  ",
 	"                                                 xvx         x     x   x                        !!!!!!!!!!!!!!xx  ",
 	"                                                             xx  |   |   |  xx            xxxxxxxxxxxxxxxxxxxxx   ",
@@ -64,7 +58,7 @@ var levelPlans = [[
 	"             xx       xx        x o x          x    xx               x   x   x               x                    ",
 	"     @       x         x        x   x          x     x               x   x   x               x                    ",
 	"    xxx      x         x        x   x          x     x               x   xxxxx   xxxxxx      x                    ",
-	"    x x      x         x       xx o xx         x     x               x     o     x x         x                    ",
+	"    x x      x         x       xx o xx         x     x               x          x x         x                    ",
 	"!!!!x x!!!!!!x         x!!!!!!xx     xx!!!!!!!!xx    x!!!!!!!!!!     x     =     x x         x                    ",
 	"!!!!x x!!!!!!x         x!!!!!xx       xxxxxxxxxx     x!!!!!!!xx!     xxxxxxxxxxxxx xx  o o  xx                    ",
 	"!!!!x x!!!!!!x         x!!!!!x    o                 xx!!!!!!xx !                    xx     xx                     ",
@@ -88,7 +82,7 @@ var levelPlans = [[
 	"                                       x x                 !!!        !!!  xxx                                ",
 	"                                       x x                 !x!        !x!                                     ",
 	"                                     xxx xxx                x          x                                      ",
-	"                                      x   x                 x   oooo   x       xxx                            ",
+	"                                      x   x                 x          x       xxx                            ",
 	"                                      x   x                 x          x      x!!!x                           ",
 	"                                      x   x                 xxxxxxxxxxxx       xxx                            ",
 	"                                     xx   xx      x   x      x                                                ",
@@ -98,9 +92,9 @@ var levelPlans = [[
 	"                                     xx   xx          x                                                       ",
 	"                                      x   x= = = =    x            xxx                                        ",
 	"                                      x   x           x           x!!!x                                       ",
-	"                                      x   x    = = = =x     o      xxx       xxx                              ",
+	"                                      x   x    = = = =x            xxx       xxx                              ",
 	"                                     xx   xx          x                     x!!!x                             ",
-	"                              o   o   x   x           x     x                xxv        xxx                   ",
+	"                              o   o   x   x           x                      xxv        xxx                   ",
 	"                                      x   x           x              x                 x!!!x                  ",
 	"                             xxx xxx xxx xxx     o o  x!!!!!!!!!!!!!!x                   vx                   ",
 	"                             x xxx x x xxx x          x!!!!!!!!!!!!!!x                                        ",
@@ -126,16 +120,16 @@ var levelPlans = [[
 	"                                                                                                  xxxxx       ",
 	"                                                                                                  x           ",
 	"                                                                                                  x xxx       ",
-	"                          o                                                                       x x x       ",
+	"                           f                                                                       x x x       ",
 	"                                                                                             o o oxxx x       ",
 	"                   xxx                                                                                x       ",
-	"       !  o  !                                                xxxxx xxxxx xxxxx xxxxx xxxxx xxxxx xxxxx       ",
+	"       !     !                                                xxxxx xxxxx xxxxx xxxxx xxxxx xxxxx xxxxx       ",
 	"       x     x                                                x   x x   x x   x x   x x   x x   x x           ",
-	"       x= o  x            x                                   xxx x xxx x xxx x xxx x xxx x xxx x xxxxx       ",
+	"       x=    x            x                                   xxx x xxx x xxx x xxx x xxx x xxx x xxxxx       ",
 	"       x     x                                                  x x   x x   x x   x x   x x   x x     x       ",
-	"       !  o  !            o                                  xxxx xxxxx xxxxx xxxxx xxxxx xxxxx xxxxxxx       ",
+	"       !     !            o                                  xxxx xxxxx xxxxx xxxxx xxxxx xxxxx xxxxxxx       ",
 	"                                                                                                              ",
-	"          o              xxx                              xx                                                  ",
+	"                         xxx                              xx                                                  ",
 	"                                                                                                              ",
 	"                                                                                                              ",
 	"                                                      xx                                                      ",
@@ -157,25 +151,22 @@ var levelPlans = [[
 	"                                                                                                              "
 ]];
 
-/*
-Set the graphics scale. Defines the number of pixels that a single unit
-takes up on the screen
-*/
+
 var scale = 20;
 
-// Define coin wobble motion
+
 var wobbleSpeed = 8, wobbleDist = 0.07;
 
-// Define player horizontal speed.
+
 var playerXSpeed = 7;
-// Define player vertical jump parameters.
+
 var gravity = 30;
 var jumpSpeed = 17;
 
-// Define game control keys.
+
 var arrowCodes = {37: "left", 38: "up", 39: "right"};
 
-// Run script once browser is ready.
+
 var ready = function(f) {
   if (document.readyState === "complete") {
     return f();
@@ -183,9 +174,9 @@ var ready = function(f) {
   document.addEventListener("DOMContentLoaded", f, false);
 };
 
-// Create level and show game.
+
 ready(function() {
-  // var simpleLevel = new Level(simpleLevelPlan);
+ 
   runGame(levelPlans, DOMDisplay);
 });
 
@@ -221,9 +212,7 @@ function Level(plan) {
 Level.prototype.isFinished = function() {
   return this.status !== null && this.finishDelay < 0;
 };
-/*
-Determine whether a rectangle overlaps a nonempty space on the background grid.
-*/
+
 Level.prototype.obstacleAt = function(pos, size) {
   var xStart = Math.floor(pos.x);
   var xEnd = Math.ceil(pos.x + size.x);
@@ -233,7 +222,7 @@ Level.prototype.obstacleAt = function(pos, size) {
   if (xStart < 0 || xEnd > this.width || yStart < 0)
     return "wall";
   if (yEnd > this.height)
-    return "lava"; // Ensure the player dies when falling out of world.
+    return "lava"; 
   for (var y = yStart; y < yEnd; y++) {
     for (var x = xStart; x < xEnd; x++) {
       var fieldType = this.grid[y][x];
@@ -241,7 +230,7 @@ Level.prototype.obstacleAt = function(pos, size) {
     }
   }
 };
-// Find actors that overlap the one given as an argument
+
 Level.prototype.actorAt = function(actor) {
   for (var i = 0; i < this.actors.length; i++) {
     var other = this.actors[i];
@@ -253,22 +242,21 @@ Level.prototype.actorAt = function(actor) {
       return other;
   }
 };
-/*
-Animate actors over time period given by step argument. The keys argument
-contains information about the arrow keys the player has pressed.
-*/
+
+
+
 Level.prototype.animate = function(step, keys) {
   if (this.status !== null)
     this.finishDelay -= step;
 
   while (step > 0) {
     var thisStep = Math.min(step, maxStep);
-    // Ok to use function in a loop in this instance.
-    /* jshint -W083 */
+    
+  
     this.actors.forEach(function(actor) {
       actor.act(thisStep, this, keys);
     }, this);
-    /* jshint +W083 */
+    
     step -= thisStep;
   }
 };
@@ -385,7 +373,7 @@ Coin.prototype.act = function(step) {
   this.pos = this.basePos.plus(new Vector(0, wobblePos));
 };
 
-// Create an element for the DOM.
+
 function createElement(name, className) {
   var element = document.createElement(name);
   if (className) {
@@ -394,10 +382,8 @@ function createElement(name, className) {
   return element;
 }
 
-/*
-A display is created by giving it a parent element to which it should append
-itself and a level object.
-*/
+
+
 function DOMDisplay(parent, level) {
   this.wrap = parent.appendChild(createElement("div", "game"));
   this.level = level;
@@ -407,7 +393,6 @@ function DOMDisplay(parent, level) {
 
 }
 
-// Create table to display the level. Each element has a single table element.
 DOMDisplay.prototype.drawBackground = function() {
   var table = createElement("table", "background");
   table.style.width = this.level.width * scale + "px";
